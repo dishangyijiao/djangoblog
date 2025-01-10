@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}我的博客{% endblock %}</title>
+    <style>
+        .header { padding: 1em; background: #f5f5f5; margin-bottom: 2em; }
+        .content { width: 80%; margin: 0 auto; }
+        .form-input { width: 100%; padding: 0.5em; }
+        .form-textarea { width: 100%; padding: 0.5em; }
+        .message { padding: 1em; margin: 1em 0; background: #e8f5e9; }
+        .error { background: #ffebee; }
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .pagination a {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #333;
+        }
+        .pagination a:hover {
+            background: #f5f5f5;
+        }
+        .pagination .current {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% if user.is_authenticated %}
+            <span>欢迎，{{ user.username }}!</span>
+            <a href="{% url 'articles:list' %}">文章列表</a>
+            <a href="{% url 'articles:create' %}">写文章</a>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">登出</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">登录</a>
+        {% endif %}
+    </div>
+
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

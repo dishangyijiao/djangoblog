@@ -1,0 +1,19 @@
+{% extends "articles/base.html" %}
+
+{% block title %}{{ article.title }} - 我的博客{% endblock %}
+
+{% block content %}
+<article>
+    <h1>{{ article.title }}</h1>
+    <p>
+        作者：{{ article.author.username }} | 
+        发布时间：{{ article.created_at|date:"Y-m-d H:i" }}
+        {% if article.updated_at != article.created_at %}
+            | 更新时间：{{ article.updated_at|date:"Y-m-d H:i" }}
+        {% endif %}
+    </p>
+    <div class="article-content" style="margin-top: 2em;">
+        {{ article.content|linebreaks }}
+    </div>
+</article>
+{% endblock %}
